@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>منصة المذاكرة – تالتة حاسبات</title>
+<link rel="stylesheet" href="Network/_مذاكرة/assets/theme.css">
+<style>
+  /* ---------- hero ---------- */
+  .hub-hero { position: relative; overflow: hidden; border-bottom: var(--bw) solid var(--ink); padding: 70px 16px 90px; text-align: center;
+    background: radial-gradient(700px 420px at 50% 100%, #FFE1A8 0%, transparent 70%), radial-gradient(480px 380px at 88% 10%, color-mix(in srgb, var(--pink) 35%, transparent), transparent 70%), radial-gradient(480px 380px at 8% 18%, color-mix(in srgb, var(--sky) 30%, transparent), transparent 70%), var(--bg); }
+  :root[data-theme="dark"] .hub-hero { background: radial-gradient(700px 420px at 50% 100%, #3A2F7A 0%, transparent 70%), var(--bg); }
+  .hub-hero .kicker { display: inline-block; font-size: 14px; font-weight: 800; padding: 3px 14px; border-radius: 99px; background: var(--mint); color: #fff; border: 2px solid var(--ink); box-shadow: var(--hard-sm); transform: rotate(-2deg); }
+  .hub-hero h1 { font-size: clamp(36px, 6vw, 72px); line-height: 1.25; margin: 18px 0 10px; }
+  .hub-hero h1 .hl { display: inline-block; background: var(--sun); padding: 0 14px; border: var(--bw) solid var(--ink); border-radius: 16px; box-shadow: var(--hard-sm); transform: rotate(-2deg); }
+  .hub-hero p { font-size: 19px; color: var(--muted); max-width: 640px; margin: 0 auto 22px; }
+  .hub-hero .cta { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .hub-hero .cta .btn { font-size: 17px; padding: 10px 20px; }
+  .floaty { position: absolute; font-size: clamp(30px, 4vw, 52px); pointer-events: none; filter: drop-shadow(3px 3px 0 var(--ink)); }
+
+  /* ---------- subject chooser ---------- */
+  .sec-title { display: flex; align-items: center; gap: 14px; margin: 50px 0 20px; font-size: clamp(26px, 3.4vw, 36px); }
+  .sec-title .tag { font-size: 14px; font-family: 'Alexandria', sans-serif; background: var(--mint); color: #fff; border: 2px solid var(--ink); border-radius: 99px; padding: 0 12px; box-shadow: var(--hard-sm); }
+  .subj-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
+  .subj { position: relative; display: flex; flex-direction: column; gap: 10px; color: inherit; text-decoration: none; background: var(--surface); border: var(--bw) solid var(--ink); border-radius: 28px; padding: 0 0 18px; box-shadow: var(--hard); overflow: hidden; transition: box-shadow .2s; }
+  a.subj:hover { box-shadow: 10px 10px 0 var(--ink); }
+  .subj .band { position: relative; height: 130px; border-bottom: var(--bw) solid var(--ink); display: flex; align-items: center; justify-content: space-between; padding: 0 22px; overflow: hidden; }
+  .subj .band .emo { font-size: 64px; filter: drop-shadow(3px 3px 0 var(--ink)); }
+  .subj .band svg { position: absolute; inset: auto 0 0 0; width: 100%; height: 56px; opacity: .35; }
+  .subj .code { font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 14px; background: #fff; color: #23204A; border: 2px solid var(--ink); border-radius: 10px; padding: 2px 10px; box-shadow: var(--hard-sm); z-index: 1; }
+  .subj .inner { padding: 0 20px; display: flex; flex-direction: column; gap: 8px; }
+  .subj h3 { margin: 0; background: none; padding: 0; font-size: 24px; }
+  .subj .en { color: var(--muted); font-size: 14px; }
+  .subj .topics { display: flex; flex-wrap: wrap; gap: 6px; direction: ltr; justify-content: flex-end; }
+  .subj .topics span { font-size: 12px; font-weight: 700; border: 2px solid var(--ink); border-radius: 99px; padding: 0 9px; background: var(--surface-2); }
+  .subj .meta { display: flex; align-items: center; gap: 12px; margin-top: 4px; }
+  .subj .ring { --p: 0; width: 64px; height: 64px; flex-shrink: 0; border-radius: 50%; display: grid; place-items: center; border: var(--bw) solid var(--ink); background: conic-gradient(var(--coral) calc(var(--p) * 1%), var(--surface-2) 0); }
+  .subj .ring span { width: 44px; height: 44px; border-radius: 50%; background: var(--surface); border: 2px solid var(--ink); display: grid; place-items: center; font-weight: 800; font-size: 13px; }
+  .subj .meta > div:nth-child(2) { flex: 1; min-width: 0; }
+  .subj .status { white-space: nowrap; display: inline-block; font-weight: 800; font-size: 13px; border: 2px solid var(--ink); border-radius: 99px; padding: 1px 12px; }
+  .subj .status.ready { background: var(--leaf); color: #23204A; } .subj .status.wip { background: var(--sun); color: #23204A; } .subj .status.soon { background: var(--surface-2); color: var(--muted); }
+  .subj .go { margin-inline-start: auto; font-weight: 800; white-space: nowrap; background: var(--sun); color: #23204A; border: 2px solid var(--ink); border-radius: 12px; padding: 4px 12px; box-shadow: var(--hard-sm); }
+  .subj.soon { opacity: .72; } .subj.soon .go { display: none; }
+  .subj .last { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); z-index: 2; font-size: 12px; font-weight: 800; background: var(--pink); color: #23204A; border: 2px solid var(--ink); border-radius: 99px; padding: 0 10px; box-shadow: var(--hard-sm); }
+
+  .tips { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .tip { border: var(--bw) solid var(--ink); border-radius: 22px; padding: 16px 18px; box-shadow: var(--hard); }
+  .tip:nth-child(1) { background: var(--sun); } .tip:nth-child(2) { background: var(--mint); color: #fff; } .tip:nth-child(3) { background: var(--pink); } .tip:nth-child(4) { background: var(--sky); color: #fff; }
+  .tip b { display: block; font-family: 'Kufam', sans-serif; font-size: 19px; margin-bottom: 4px; }
+  footer { text-align: center; padding: 40px 16px 70px; color: var(--muted); font-weight: 700; }
+</style>
+</head>
+<body class="home">
+<div class="topbar"><div class="wrap">
+  <span class="title">🎓 منصة المذاكرة · تالتة حاسبات</span>
+  <a class="btn" href="#subjects">📚 المواد</a>
+  <button class="btn sun" data-action="theme">🌓</button>
+</div></div>
+
+<header class="hub-hero">
+  <span class="floaty" style="top:14%;right:8%">🛰️</span><span class="floaty" style="top:62%;right:14%">〰️</span><span class="floaty" style="top:20%;left:9%">💻</span>
+  <span class="floaty" style="top:66%;left:12%">🧠</span><span class="floaty" style="top:8%;left:38%">🎬</span><span class="floaty" style="top:78%;left:46%">🌐</span>
+  <span class="kicker">6 مواد · مكان واحد</span>
+  <h1>هتذاكر <span class="hl">إيه</span> النهارده؟ 🤔</h1>
+  <p>اختار المادة، وجوّاها هتلاقي كل محاضرة بالشرح والفيديو والتدريب بالإنجليزي والفلاش كارد.</p>
+  <div class="cta"><a class="btn primary" id="resume" href="#subjects">📚 اختار مادة</a></div>
+</header>
+
+<div class="wrap">
+  <h2 class="sec-title" id="subjects">📚 المواد <span class="tag">اختار وابدأ</span></h2>
+  <div class="subj-grid" id="subj-grid"></div>
+
+  <h2 class="sec-title">🧭 نصايح للمذاكرة</h2>
+  <div class="tips">
+    <div class="tip"><b>🎯 مادة واحدة في المرة</b>خلّص محاضرة كاملة (فيديو ← شرح ← تدريب ← كروت) قبل ما تنقل لمادة تانية.</div>
+    <div class="tip"><b>🔁 كرّر بالكروت</b>راجع الفلاش كارد النهارده، وبعد يوم، وبعد 3 أيام، وبعد أسبوع.</div>
+    <div class="tip"><b>🔗 اربط المواد</b>الـ DSP بيقابلك في الـ Multimedia، والشبكات في الـ IP، والـ OS في كل حاجة.</div>
+    <div class="tip"><b>📝 الامتحان إنجليزي</b>كل أسئلة التدريب بالإنجليزي، فحل منها كتير قبل الامتحان.</div>
+  </div>
+</div>
+<footer>صُنع للمذاكرة بحب 💛 · تالتة حاسبات</footer>
+
+<script src="Network/_مذاكرة/assets/app.js"></script>
+<script src="Network/_مذاكرة/assets/vendor/gsap.min.js"></script>
+<script src="Network/_مذاكرة/assets/vendor/ScrollTrigger.min.js"></script>
+<script src="Network/_مذاكرة/assets/vendor/SplitText.min.js"></script>
+<script>
+// status: ready = all lectures built · wip = being built · soon = not started
+const SUBJECTS = [
+  { id: 'net', name: 'Computer Network II', ar: 'الشبكات 2', code: 'IT301', emo: '🛰️', color: '#3B9EFF', href: 'Network/_مذاكرة/00_خريطة_المادة.html', lectures: 12, status: 'ready', doneKey: 'net-done', topics: ['VLAN', 'Subnetting', 'OSPF', 'STP', 'ACL', 'NAT'] },
+  { id: 'dsp', name: 'Digital Signal Processing', ar: 'معالجة الإشارات الرقمية', code: 'IT303', emo: '〰️', color: '#FF6B5B', href: 'DSP/_مذاكرة/00_خريطة_المادة.html', lectures: 11, status: 'ready', doneKey: 'dsp-done', topics: ['Sampling', 'Convolution', 'Z-Transform', 'DFT', 'FFT', 'Filters'] },
+  { id: 'os', name: 'Operating Systems', ar: 'نظم التشغيل', code: 'CS301', emo: '🧠', color: '#8E6CFF', href: 'OS/_مذاكرة/00_خريطة_المادة.html', lectures: 11, status: 'ready', doneKey: 'os-done', topics: ['Processes', 'Threads', 'Scheduling', 'Memory', 'Linux Labs'] },
+  { id: 'ip', name: 'Internet Programming', ar: 'برمجة الإنترنت', code: 'IT304', emo: '🌐', color: '#1FC8A9', href: 'IP/_مذاكرة/00_خريطة_المادة.html', lectures: 5, status: 'ready', doneKey: 'ip-done', topics: ['HTML', 'CSS', 'Forms', 'Web Basics'] },
+  { id: 'arch', name: 'Computer Architecture', ar: 'معمارية الحاسب', code: 'Com Arch', emo: '💻', color: '#FFC83D', href: 'com Arch/_مذاكرة/00_خريطة_المادة.html', lectures: 11, status: 'ready', doneKey: 'arch-done', topics: ['CPU', 'Instructions', 'Memory', 'Labs'] },
+  { id: 'mm', name: 'Multimedia', ar: 'الوسائط المتعددة', code: 'IT302', emo: '🎬', color: '#FF7AC6', href: 'multimedia/_مذاكرة/00_خريطة_المادة.html', lectures: 12, status: 'ready', doneKey: 'mm-done', topics: ['Image', 'Audio', 'Video', 'Compression'] }
+];
+const STATUS = { ready: '✅ جاهزة', wip: '🛠️ بتتجهّز دلوقتي', soon: '⏳ قريباً' };
+const last = store.get('hub-last', null), grid = document.getElementById('subj-grid');
+// a small wave for each card band, different frequency per subject
+const wave = (k, col) => { let d = 'M0 40'; for (let x = 0; x <= 400; x += 8) d += ` L${x} ${(40 - 18 * Math.sin(x / (14 + k * 4))).toFixed(1)}`; return `<svg viewBox="0 0 400 56" preserveAspectRatio="none"><path d="${d}" fill="none" stroke="#23204A" stroke-width="4"/></svg>`; };
+SUBJECTS.forEach((s, i) => {
+  const done = Object.values(store.get(s.doneKey, {})).filter(Boolean).length, pct = s.lectures ? Math.round(done / s.lectures * 100) : 0;
+  const el = document.createElement(s.href ? 'a' : 'div');
+  el.className = 'subj ' + s.status; if (s.href) el.href = s.href;
+  el.innerHTML = `${last === s.id ? '<span class="last">📌 آخر مادة ذاكرتها</span>' : ''}
+    <div class="band" style="background:${s.color}"><span class="emo">${s.emo}</span><span class="code">${s.code}</span>${wave(i, s.color)}</div>
+    <div class="inner">
+      <h3>${s.ar}</h3><div class="en">${s.name}</div>
+      <div class="topics">${s.topics.map(t => `<span>${t}</span>`).join('')}</div>
+      <div class="meta"><div class="ring" style="--p:${pct}"><span>${pct}%</span></div>
+        <div><span class="status ${s.status}">${STATUS[s.status]}</span><div class="en" style="margin-top:4px">${s.lectures ? `خلّصت ${done} من ${s.lectures} محاضرة` : 'لسه مبدأناش'}</div></div>
+        <span class="go">ذاكر ←</span></div>
+    </div>`;
+  if (s.href) el.addEventListener('click', () => store.set('hub-last', s.id));
+  grid.appendChild(el);
+});
+const lastS = SUBJECTS.find(s => s.id === last && s.href);
+if (lastS) { const r = document.getElementById('resume'); r.href = lastS.href; r.textContent = `▶ كمّل ${lastS.ar}`; }
+
+document.fonts.ready.then(() => {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const st = new SplitText('.hub-hero h1', { type: 'words' });
+  gsap.timeline({ defaults: { ease: 'back.out(1.8)' } })
+    .from('.hub-hero .kicker', { y: -30, opacity: 0, rotate: -20, duration: .6 })
+    .from(st.words, { y: 70, opacity: 0, rotate: () => gsap.utils.random(-15, 15), stagger: .08, duration: .7 }, '-=.3')
+    .from('.hub-hero p, .hub-hero .cta .btn', { y: 30, opacity: 0, stagger: .1, duration: .5 }, '-=.4')
+    .from('.floaty', { scale: 0, rotate: -90, stagger: .06, duration: .6 }, '-=.6');
+  gsap.utils.toArray('.floaty').forEach((f, i) => gsap.to(f, { y: gsap.utils.random(-18, 18), x: gsap.utils.random(-12, 12), rotate: gsap.utils.random(-14, 14), duration: gsap.utils.random(2.2, 3.4), repeat: -1, yoyo: true, ease: 'sine.inOut', delay: i * .2 }));
+  gsap.from('.subj', { y: 80, rotate: i => (i % 2 ? 4 : -4), opacity: 0, stagger: .1, duration: .8, ease: 'back.out(1.5)', scrollTrigger: { trigger: '#subj-grid', start: 'top 85%', once: true } });
+  gsap.from('.subj .ring', { '--p': 0, duration: 1.4, ease: 'power2.out', stagger: .1, scrollTrigger: { trigger: '#subj-grid', start: 'top 85%', once: true } });
+  gsap.from('.tip', { y: 50, opacity: 0, stagger: .1, duration: .6, ease: 'back.out(1.6)', scrollTrigger: { trigger: '.tips', start: 'top 85%', once: true } });
+  // tilt cards toward the pointer
+  document.querySelectorAll('a.subj').forEach(c => {
+    c.addEventListener('pointermove', e => { const r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5; gsap.to(c, { rotateY: x * 8, rotateX: -y * 8, transformPerspective: 900, duration: .4 }); });
+    c.addEventListener('pointerleave', () => gsap.to(c, { rotateY: 0, rotateX: 0, duration: .6, ease: 'elastic.out(1,.4)' }));
+  });
+});
+</script>
+</body>
+</html>
